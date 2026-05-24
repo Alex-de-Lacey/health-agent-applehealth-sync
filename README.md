@@ -1,6 +1,6 @@
 # health-agent-applehealth-sync
 
-iOS app that reads Apple HealthKit data and syncs it to an OpenClaw VPC database.
+iOS app that reads Apple HealthKit data and syncs it to a SQLite database on a VPC. OpenClaw reads from that database to inform its decisions.
 
 ## What it syncs
 
@@ -32,7 +32,3 @@ API_KEY=your-key DB_PATH=/path/to/fitness.db npx ts-node server.ts
 ```
 
 Runs on port 3000. Install as a systemd service for persistence.
-
-## Credentials
-
-`Secrets.swift` is gitignored — never commit it. It holds the VPC IP and API key.
