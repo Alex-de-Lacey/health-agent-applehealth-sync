@@ -8,6 +8,11 @@ struct RunningWorkoutPayload: Encodable {
     let duration_seconds: Int
     let distance_meters: Double?
     let avg_heart_rate_bpm: Double?
+    let max_heart_rate_bpm: Double?
+    let calories_kcal: Double?
+    let elevation_gain_meters: Double?
+    let avg_speed_mps: Double?
+    let step_count: Int?
     let source: String
 }
 

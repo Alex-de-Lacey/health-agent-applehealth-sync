@@ -54,10 +54,16 @@ final class SyncOrchestrator {
 
     private func normalizeWorkouts(_ workouts: [HKWorkout]) -> [RunningWorkoutPayload] {
         let hrType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let speedType = HKQuantityType.quantityType(forIdentifier: .runningSpeed)!
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let bpmUnit = HKUnit.count().unitDivided(by: .minute())
+        let mpsUnit = HKUnit.meter().unitDivided(by: .second())
         return workouts
             .filter { $0.workoutActivityType == .running }
             .map { workout in
+                let hrStats = workout.statistics(for: hrType)
+                let elevationQty = workout.metadata?[HKMetadataKeyElevationAscended] as? HKQuantity
                 RunningWorkoutPayload(
                     id: workout.uuid.uuidString,
                     workout_type: "running",
@@ -65,8 +71,12 @@ final class SyncOrchestrator {
                     ended_at: isoFormatter.string(from: workout.endDate),
                     duration_seconds: Int(workout.duration),
                     distance_meters: workout.totalDistance?.doubleValue(for: .meter()),
-                    avg_heart_rate_bpm: workout.statistics(for: hrType)?
-                        .averageQuantity()?.doubleValue(for: bpmUnit),
+                    avg_heart_rate_bpm: hrStats?.averageQuantity()?.doubleValue(for: bpmUnit),
+                    max_heart_rate_bpm: hrStats?.maximumQuantity()?.doubleValue(for: bpmUnit),
+                    calories_kcal: workout.statistics(for: energyType)?.sumQuantity()?.doubleValue(for: .kilocalorie()),
+                    elevation_gain_meters: elevationQty?.doubleValue(for: .meter()),
+                    avg_speed_mps: workout.statistics(for: speedType)?.averageQuantity()?.doubleValue(for: mpsUnit),
+                    step_count: workout.statistics(for: stepType).flatMap { Int($0.sumQuantity()?.doubleValue(for: .count()) ?? 0) },
                     source: "apple_health"
                 )
             }

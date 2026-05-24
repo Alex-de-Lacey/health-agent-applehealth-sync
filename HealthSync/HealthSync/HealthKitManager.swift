@@ -12,7 +12,10 @@ final class HealthKitManager {
             HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .vo2Max)!,
-            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .runningSpeed)!,
+            HKObjectType.quantityType(forIdentifier: .stepCount)!
         ]
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             store.requestAuthorization(toShare: nil, read: readTypes) { _, error in
