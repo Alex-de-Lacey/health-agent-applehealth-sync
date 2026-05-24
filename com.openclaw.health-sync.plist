@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openclaw.health-sync</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/health-sync</string>
+    </array>
+
+    <!-- Run every 30 minutes (seconds after previous exit) -->
+    <key>StartInterval</key>
+    <integer>1800</integer>
+
+    <!-- Run immediately on launchctl load -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Credentials live in ~/.health-sync/config.json — no env vars needed -->
+
+    <!-- Prevent tight restart loop on repeated crashes -->
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/com.openclaw.health-sync.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.openclaw.health-sync.stderr.log</string>
+</dict>
+</plist>
